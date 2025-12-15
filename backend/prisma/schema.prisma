@@ -1,0 +1,180 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password_hash String    @map("password_hash")
+  name          String
+  phone         String?
+  role          UserRole  @default(CUSTOMER)
+  status        UserStatus @default(ACTIVE)
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  orders        Order[]
+
+  @@map("users")
+  @@index([email])
+  @@index([role])
+}
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+
+  @@map("user_role")
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+
+  @@map("user_status")
+}
+
+model Cafe {
+  id        String   @id @default(uuid())
+  name      String
+  address   String?
+  phone     String?
+  is_active Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  menus     Menu[]
+  orders    Order[]
+
+  @@map("cafes")
+}
+
+model Menu {
+  id          String   @id @default(uuid())
+  cafe_id    String
+  name        String
+  description String?
+  price       Int
+  image_url   String?  @map("image_url")
+  category    String?
+  is_active   Boolean  @default(true)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  deleted_at  DateTime?
+
+  cafe           Cafe            @relation(fields: [cafe_id], references: [id])
+  option_groups  OptionGroup[]
+  order_items    OrderItem[]
+
+  @@map("menus")
+  @@index([cafe_id])
+  @@index([is_active])
+  @@index([category])
+}
+
+model OptionGroup {
+  id            String   @id @default(uuid())
+  menu_id       String
+  name          String
+  is_required   Boolean  @default(false)
+  allow_multiple Boolean  @default(false)
+  display_order Int?
+  created_at    DateTime @default(now())
+
+  menu          Menu          @relation(fields: [menu_id], references: [id], onDelete: Cascade)
+  menu_options  MenuOption[]
+
+  @@map("option_groups")
+}
+
+model MenuOption {
+  id                String   @id @default(uuid())
+  option_group_id   String
+  name              String
+  price_adjustment  Int       @default(0)
+  display_order     Int?
+  created_at        DateTime @default(now())
+
+  option_group      OptionGroup       @relation(fields: [option_group_id], references: [id], onDelete: Cascade)
+  order_item_options OrderItemOption[]
+
+  @@map("menu_options")
+  @@index([option_group_id])
+}
+
+model Order {
+  id                    String      @id @default(uuid())
+  order_number          String      @unique
+  customer_id           String
+  cafe_id               String
+  status                OrderStatus @default(PENDING)
+  total_amount          Int
+  discount_amount       Int          @default(0)
+  final_amount          Int
+  pickup_time           DateTime?
+  pickup_estimated_time DateTime?
+  notes                 String?
+  created_at            DateTime     @default(now())
+  updated_at            DateTime     @updatedAt
+
+  customer    User        @relation(fields: [customer_id], references: [id])
+  cafe        Cafe        @relation(fields: [cafe_id], references: [id])
+  order_items OrderItem[]
+
+  @@map("orders")
+  @@index([customer_id])
+  @@index([cafe_id])
+  @@index([status])
+  @@index([created_at(sort: Desc)])
+}
+
+enum OrderStatus {
+  PENDING
+  PREPARING
+  READY
+  PICKED
+  COMPLETED
+  CANCELLED
+
+  @@map("order_status")
+}
+
+model OrderItem {
+  id         String   @id @default(uuid())
+  order_id   String
+  menu_id    String
+  quantity   Int
+  unit_price Int
+  subtotal   Int
+  notes      String?
+  created_at DateTime @default(now())
+
+  order            Order              @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  menu            Menu               @relation(fields: [menu_id], references: [id])
+  order_item_options OrderItemOption[]
+
+  @@map("order_items")
+  @@index([order_id])
+}
+
+model OrderItemOption {
+  id              String   @id @default(uuid())
+  order_item_id   String
+  menu_option_id  String
+  option_price    Int
+
+  order_item  OrderItem  @relation(fields: [order_item_id], references: [id], onDelete: Cascade)
+  menu_option MenuOption @relation(fields: [menu_option_id], references: [id])
+
+  @@map("order_item_options")
+}
+
