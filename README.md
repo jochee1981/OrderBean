@@ -1534,3 +1534,8 @@ This project is proprietary and confidential.
 **문서 버전**: 1.0  
 **최종 업데이트**: 2024-12-15
 
+#To-Do List
+
+- TC
+- Implementation
+- Refactoring
