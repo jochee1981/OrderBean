@@ -1525,6 +1525,20 @@ CREATE TABLE menu_options (
 
 ---
 
+## 빠른 시작
+
+프로젝트를 빠르게 시작하려면:
+
+- **[빠른 시작 가이드](./docs/QUICK_START.md)** - 5분 안에 시작하기 ⚡
+- **[설치 가이드](./docs/INSTALLATION.md)** - 상세한 설치 방법
+- **[개발 가이드](./docs/DEVELOPMENT.md)** - 개발 환경 설정
+
+## 문서
+
+전체 문서는 [docs/README.md](./docs/README.md)를 참고하세요.
+
+---
+
 ## License
 
 This project is proprietary and confidential.

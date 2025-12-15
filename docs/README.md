@@ -4,6 +4,11 @@ OrderBean 프로젝트의 전체 문서입니다.
 
 ## 📚 문서 목록
 
+### 시작하기
+
+- **[빠른 시작](./QUICK_START.md)**: 5분 안에 시작하기 ⚡
+- **[설치 가이드](./INSTALLATION.md)**: 상세한 설치 방법
+
 ### 개발자 가이드
 
 - **[개발 가이드](./DEVELOPMENT.md)**: 개발 환경 설정 및 개발 워크플로우
@@ -19,41 +24,30 @@ OrderBean 프로젝트의 전체 문서입니다.
 
 ## 🚀 빠른 시작
 
-### 개발 환경 설정
+가장 빠른 방법으로 시작하려면 [빠른 시작 가이드](./QUICK_START.md)를 확인하세요!
 
-1. **저장소 클론**
+### Docker 사용 (권장)
+
 ```bash
-git clone <repository-url>
+git clone https://github.com/jochee1981/OrderBean.git
 cd OrderBean
+docker-compose up -d
+docker-compose exec backend npm run prisma:migrate
+docker-compose exec backend npm run prisma:seed
 ```
 
-2. **Backend 설정**
-```bash
-cd backend
-npm install
-cp env.example .env
-npm run prisma:generate
-npm run prisma:migrate
-npm run dev
-```
-
-3. **Frontend 설정**
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-자세한 내용은 [개발 가이드](./DEVELOPMENT.md)를 참고하세요.
+자세한 내용은 [빠른 시작](./QUICK_START.md) 또는 [설치 가이드](./INSTALLATION.md)를 참고하세요.
 
 ## 📖 문서 읽는 순서
 
 ### 새로운 개발자
 
 1. [README.md](../README.md) - 프로젝트 개요 이해
-2. [PROJECT_STRUCTURE.md](../PROJECT_STRUCTURE.md) - 프로젝트 구조 파악
-3. [DEVELOPMENT.md](./DEVELOPMENT.md) - 개발 환경 설정
-4. [API.md](./API.md) - API 사용법 학습
+2. [QUICK_START.md](./QUICK_START.md) - 빠르게 시작하기 ⚡
+3. [INSTALLATION.md](./INSTALLATION.md) - 상세 설치 방법
+4. [PROJECT_STRUCTURE.md](../PROJECT_STRUCTURE.md) - 프로젝트 구조 파악
+5. [DEVELOPMENT.md](./DEVELOPMENT.md) - 개발 환경 설정
+6. [API.md](./API.md) - API 사용법 학습
 
 ### 배포 담당자
 
@@ -69,6 +63,8 @@ npm run dev
 
 특정 주제를 찾고 있다면:
 
+- **빠르게 시작**: [QUICK_START.md](./QUICK_START.md) ⚡
+- **설치 방법**: [INSTALLATION.md](./INSTALLATION.md)
 - **개발 환경**: [DEVELOPMENT.md](./DEVELOPMENT.md)
 - **API 사용**: [API.md](./API.md)
 - **배포**: [DEPLOYMENT.md](./DEPLOYMENT.md)
