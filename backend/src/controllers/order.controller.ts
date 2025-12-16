@@ -1,18 +1,18 @@
-import { Request, Response, NextFunction } from 'express'
+import { Response, NextFunction } from 'express'
 import { AppError } from '../middleware/errorHandler'
 import { AuthRequest } from '../middleware/auth.middleware'
 import { prisma } from '../lib/prisma'
-import { io } from '../index'
+import { getIo } from '../lib/socket'
+import { OrderStatus } from '@prisma/client'
 
 export const createOrder = async (
-  req: AuthRequest,
+  _req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    if (!req.user) {
-      return next(new AppError('Unauthorized', 401))
-    }
+    // _req.user is guaranteed by authenticate middleware
+    // TODO: Use _req.user!.id in implementation
 
     // TODO: Implement order creation logic
     // - Validate input
@@ -36,13 +36,10 @@ export const getOrders = async (
   next: NextFunction
 ) => {
   try {
-    if (!req.user) {
-      return next(new AppError('Unauthorized', 401))
-    }
-
+    // req.user is guaranteed by authenticate middleware
     const orders = await prisma.order.findMany({
       where: {
-        customer_id: req.user.id,
+        customer_id: req.user!.id,
       },
       include: {
         order_items: {
@@ -71,10 +68,7 @@ export const getOrderById = async (
   next: NextFunction
 ) => {
   try {
-    if (!req.user) {
-      return next(new AppError('Unauthorized', 401))
-    }
-
+    // req.user is guaranteed by authenticate middleware
     const { id } = req.params
 
     const order = await prisma.order.findUnique({
@@ -88,7 +82,7 @@ export const getOrderById = async (
       },
     })
 
-    if (!order || order.customer_id !== req.user.id) {
+    if (!order || order.customer_id !== req.user!.id) {
       return next(new AppError('Order not found', 404))
     }
 
@@ -107,22 +101,32 @@ export const cancelOrder = async (
   next: NextFunction
 ) => {
   try {
-    if (!req.user) {
-      return next(new AppError('Unauthorized', 401))
-    }
-
+    // req.user is guaranteed by authenticate middleware
     const { id } = req.params
+    
+    // Verify order ownership
+    const existingOrder = await prisma.order.findUnique({
+      where: { id },
+      select: { customer_id: true },
+    })
+
+    if (!existingOrder || existingOrder.customer_id !== req.user!.id) {
+      return next(new AppError('Order not found or unauthorized', 404))
+    }
 
     const order = await prisma.order.update({
       where: { id },
-      data: { status: 'cancelled' },
+      data: { status: OrderStatus.CANCELLED },
     })
 
     // Notify via WebSocket
-    io.to(`order:${id}`).emit('order:status-changed', {
-      orderId: id,
-      status: 'cancelled',
-    })
+    const io = getIo()
+    if (io) {
+      io.to(`order:${id}`).emit('order:status-changed', {
+        orderId: id,
+        status: OrderStatus.CANCELLED,
+      })
+    }
 
     res.json({
       success: true,
@@ -134,7 +138,7 @@ export const cancelOrder = async (
 }
 
 export const retryOrder = async (
-  req: AuthRequest,
+  _req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {

@@ -1,11 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
-import { AppError } from '../middleware/errorHandler'
 import { AuthRequest } from '../middleware/auth.middleware'
 import { prisma } from '../lib/prisma'
-import { io } from '../index'
+import { getIo } from '../lib/socket'
 
 export const getOrderDashboard = async (
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -39,10 +38,13 @@ export const updateOrderStatus = async (
     })
 
     // Notify customer via WebSocket
-    io.to(`order:${id}`).emit('order:status-changed', {
-      orderId: id,
-      status,
-    })
+    const io = getIo()
+    if (io) {
+      io.to(`order:${id}`).emit('order:status-changed', {
+        orderId: id,
+        status,
+      })
+    }
 
     res.json({
       success: true,
@@ -54,7 +56,7 @@ export const updateOrderStatus = async (
 }
 
 export const getOrderAnalytics = async (
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -76,7 +78,7 @@ export const getOrderAnalytics = async (
 }
 
 export const getMenuAnalytics = async (
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ) => {

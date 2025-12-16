@@ -12,7 +12,7 @@ export interface AuthRequest extends Request {
 
 export const authenticate = (
   req: AuthRequest,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) => {
   try {
@@ -41,12 +41,16 @@ export const authenticate = (
 }
 
 export const authorize = (...roles: string[]) => {
-  return (req: AuthRequest, res: Response, next: NextFunction) => {
+  return (req: AuthRequest, _res: Response, next: NextFunction) => {
     if (!req.user) {
       return next(new AppError('Unauthorized', 401))
     }
 
-    if (!roles.includes(req.user.role)) {
+    // Normalize role comparison (handle both 'ADMIN' and 'admin')
+    const userRole = req.user.role.toUpperCase()
+    const normalizedRoles = roles.map(r => r.toUpperCase())
+    
+    if (!normalizedRoles.includes(userRole)) {
       return next(new AppError('Forbidden', 403))
     }
 

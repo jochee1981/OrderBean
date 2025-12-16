@@ -4,7 +4,7 @@ interface User {
   id: string
   email: string
   name: string
-  role: 'customer' | 'admin'
+  role: 'customer' | 'admin' | 'CUSTOMER' | 'ADMIN'
 }
 
 interface AuthState {
@@ -20,6 +20,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   token: null,
   setUser: (user) => set({ user }),
   setToken: (token) => set({ token }),
-  logout: () => set({ user: null, token: null }),
+  logout: () => {
+    localStorage.removeItem('token')
+    set({ user: null, token: null })
+  },
 }))
 

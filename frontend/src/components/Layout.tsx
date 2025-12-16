@@ -29,7 +29,7 @@ export default function Layout() {
                   >
                     주문 내역
                   </Link>
-                  {user.role === 'admin' && (
+                  {(user.role === 'admin' || user.role === 'ADMIN') && (
                     <Link
                       to="/admin/dashboard"
                       className="text-gray-700 hover:text-primary-600"

@@ -3,6 +3,7 @@ import { AppError } from '../middleware/errorHandler'
 import { prisma } from '../lib/prisma'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import { UserRole } from '@prisma/client'
 
 export const signup = async (
   req: Request,
@@ -30,7 +31,7 @@ export const signup = async (
         email,
         password_hash: hashedPassword,
         name,
-        role: 'customer',
+        role: UserRole.CUSTOMER,
       },
     })
 
@@ -44,7 +45,7 @@ export const signup = async (
           id: user.id,
           email: user.email,
           name: user.name,
-          role: user.role,
+          role: user.role, // Returns 'CUSTOMER' or 'ADMIN' from Prisma enum
         },
         token,
       },
@@ -87,7 +88,7 @@ export const login = async (
           id: user.id,
           email: user.email,
           name: user.name,
-          role: user.role,
+          role: user.role, // Returns 'CUSTOMER' or 'ADMIN' from Prisma enum
         },
         token,
       },
@@ -98,9 +99,9 @@ export const login = async (
 }
 
 export const logout = async (
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   // In a stateless JWT system, logout is handled client-side
   // But we can add token blacklisting here if needed
@@ -108,9 +109,9 @@ export const logout = async (
 }
 
 export const refresh = async (
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   // Implement token refresh logic
   res.json({ success: true, message: 'Token refreshed' })
@@ -122,10 +123,12 @@ function generateToken(userId: string, email: string, role: string): string {
     throw new Error('JWT_SECRET is not defined')
   }
 
+  const expiresIn = process.env.JWT_EXPIRES_IN || '24h'
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return jwt.sign(
     { id: userId, email, role },
     secret,
-    { expiresIn: process.env.JWT_EXPIRES_IN || '24h' }
-  )
+    { expiresIn } as any
+  ) as string
 }
 

@@ -22,7 +22,8 @@ const httpServer = createServer(app)
 const io = new Server(httpServer, {
   cors: {
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    credentials: true,
   },
 })
 
@@ -63,7 +64,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 // Health check
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })
 })
 
@@ -89,6 +90,9 @@ io.on('connection', (socket) => {
 
 // Export io for use in other modules
 export { io }
+// Set in socket lib to avoid circular dependency
+import { setIo } from './lib/socket'
+setIo(io)
 
 // Error handling
 app.use(notFoundHandler)
