@@ -17,7 +17,7 @@ export default function Layout() {
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <Link to="/" className="text-2xl font-bold text-purple-600">
-                COZY
+                OrderBean – 커피 주문
               </Link>
             </div>
             <div className="flex items-center space-x-4">
@@ -45,12 +45,20 @@ export default function Layout() {
                   </button>
                 </>
               ) : (
-                <Link
-                  to="/login"
-                  className="px-4 py-2 rounded-md bg-purple-500 text-white hover:bg-purple-600 transition-colors"
-                >
-                  로그인
-                </Link>
+                <>
+                  <Link
+                    to="/admin/dashboard"
+                    className="px-4 py-2 rounded-md bg-gray-700 text-white hover:bg-gray-800 transition-colors"
+                  >
+                    관리자
+                  </Link>
+                  <Link
+                    to="/login"
+                    className="px-4 py-2 rounded-md bg-purple-500 text-white hover:bg-purple-600 transition-colors"
+                  >
+                    로그인
+                  </Link>
+                </>
               )}
             </div>
           </div>

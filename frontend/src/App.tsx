@@ -9,6 +9,7 @@ import OrderTrackingPage from './pages/OrderTrackingPage'
 import AdminDashboardPage from './pages/admin/DashboardPage'
 import AdminMenuPage from './pages/admin/MenuPage'
 import AdminOrdersPage from './pages/admin/OrdersPage'
+import AdminDashboard from './pages/AdminDashboard'
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
           <Route path="orders" element={<OrderHistoryPage />} />
           <Route path="orders/:id" element={<OrderTrackingPage />} />
           <Route path="admin">
-            <Route path="dashboard" element={<AdminDashboardPage />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="menus" element={<AdminMenuPage />} />
             <Route path="orders" element={<AdminOrdersPage />} />
           </Route>
