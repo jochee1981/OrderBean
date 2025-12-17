@@ -1,6 +1,6 @@
 import request from 'supertest'
 import app from './app.test'
-import { createTestUser, getAuthHeaders } from './helpers/testHelpers'
+import { createTestUser, getAuthHeaders, cleanupOrderData } from './helpers/testHelpers'
 
 describe('Order Controller - Create Order', () => {
   let authToken: string
@@ -8,6 +8,15 @@ describe('Order Controller - Create Order', () => {
   beforeAll(async () => {
     // Create test user
     authToken = await createTestUser(app)
+  })
+
+  // Clean up order data before and after each test
+  beforeEach(async () => {
+    await cleanupOrderData()
+  })
+
+  afterEach(async () => {
+    await cleanupOrderData()
   })
 
   describe('POST /api/v1/orders - 정상적인 주문 생성', () => {
