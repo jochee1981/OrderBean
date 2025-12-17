@@ -1,6 +1,6 @@
 import { prisma } from '../lib/prisma'
 import { AppError } from '../middleware/errorHandler'
-import { Menu, MenuOption, OptionGroup } from '@prisma/client'
+import { Menu } from '@prisma/client'
 
 /**
  * Generate unique order number

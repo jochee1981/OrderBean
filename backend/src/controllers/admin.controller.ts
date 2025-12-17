@@ -257,10 +257,13 @@ export const getMenuAnalytics = async (
       _count: {
         id: true,
       },
-      orderBy: {
-        _sum: {
-          quantity: 'desc',
-        },
+    })
+
+    // Sort by quantity descending
+    menuSalesData.sort((a, b) => {
+      const aQty = a._sum.quantity || 0
+      const bQty = b._sum.quantity || 0
+      return bQty - aQty
     })
 
     // Get menu details

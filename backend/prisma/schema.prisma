@@ -80,6 +80,8 @@ model Menu {
   @@index([cafe_id])
   @@index([is_active])
   @@index([category])
+  @@index([is_active, category])
+  @@index([cafe_id, is_active])
 }
 
 model OptionGroup {
@@ -136,6 +138,8 @@ model Order {
   @@index([cafe_id])
   @@index([status])
   @@index([created_at(sort: Desc)])
+  @@index([status, created_at(sort: Desc)])
+  @@index([customer_id, status])
 }
 
 enum OrderStatus {
@@ -165,6 +169,8 @@ model OrderItem {
 
   @@map("order_items")
   @@index([order_id])
+  @@index([menu_id])
+  @@index([order_id, menu_id])
 }
 
 model OrderItemOption {

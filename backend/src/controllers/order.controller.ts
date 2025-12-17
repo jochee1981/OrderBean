@@ -75,7 +75,7 @@ export const createOrder = async (
       })
 
       // Create order items
-      const orderItems = await Promise.all(
+      await Promise.all(
         orderData.items.map(async (item, index) => {
           const itemPrice = itemPrices[index]
           const orderItem = await tx.orderItem.create({
@@ -404,7 +404,7 @@ export const retryOrder = async (
       })
 
       // Create order items
-      const orderItems = await Promise.all(
+      await Promise.all(
         orderData.items.map(async (item, index) => {
           const itemPrice = itemPrices[index]
           const orderItem = await tx.orderItem.create({

@@ -9,7 +9,7 @@ import { AppError } from './errorHandler'
  * @returns Express middleware function
  */
 export const validateRequest = (schema: ZodSchema) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, _res: Response, next: NextFunction) => {
     try {
       // Validate request body against schema
       const validated = schema.parse(req.body)

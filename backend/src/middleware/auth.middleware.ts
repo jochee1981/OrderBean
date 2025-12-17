@@ -18,7 +18,7 @@ export const authenticate = (
   try {
     const authHeader = req.headers.authorization
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new AppError('Unauthorized', 401)
+      throw new AppError('Unauthorized', 401, 'UNAUTHORIZED')
     }
 
     const token = authHeader.substring(7)
@@ -36,7 +36,11 @@ export const authenticate = (
     req.user = decoded
     next()
   } catch (error) {
-    next(new AppError('Unauthorized', 401))
+    if (error instanceof AppError) {
+      next(error)
+    } else {
+      next(new AppError('Unauthorized', 401, 'UNAUTHORIZED'))
+    }
   }
 }
 
