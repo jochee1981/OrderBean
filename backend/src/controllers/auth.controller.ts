@@ -109,12 +109,74 @@ export const logout = async (
 }
 
 export const refresh = async (
-  _req: Request,
+  req: Request,
   res: Response,
-  _next: NextFunction
+  next: NextFunction
 ) => {
-  // Implement token refresh logic
-  res.json({ success: true, message: 'Token refreshed' })
+  try {
+    // Get token from Authorization header or request body
+    let token: string | undefined
+
+    // Try to get from Authorization header first
+    const authHeader = req.headers.authorization
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.substring(7)
+    } else if (req.body && req.body.token) {
+      // Fallback to body
+      token = req.body.token
+    }
+
+    if (!token) {
+      return next(new AppError('Token is required', 400, 'TOKEN_REQUIRED'))
+    }
+
+    const secret = process.env.JWT_SECRET
+    if (!secret) {
+      throw new Error('JWT_SECRET is not defined')
+    }
+
+    // Verify token (allow expired tokens for refresh)
+    let decoded: { id: string; email: string; role: string }
+    try {
+      decoded = jwt.verify(token, secret, {
+        ignoreExpiration: true, // Allow expired tokens for refresh
+      }) as { id: string; email: string; role: string }
+    } catch (error) {
+      return next(new AppError('Invalid token', 401, 'INVALID_TOKEN'))
+    }
+
+    // Verify user still exists
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.id },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        status: true,
+      },
+    })
+
+    if (!user) {
+      return next(new AppError('User not found', 404, 'USER_NOT_FOUND'))
+    }
+
+    // Check if user is active
+    if (user.status !== 'ACTIVE') {
+      return next(new AppError('User account is not active', 403, 'ACCOUNT_INACTIVE'))
+    }
+
+    // Generate new token
+    const newToken = generateToken(user.id, user.email, user.role)
+
+    res.json({
+      success: true,
+      data: {
+        token: newToken,
+      },
+    })
+  } catch (error) {
+    next(error)
+  }
 }
 
 function generateToken(userId: string, email: string, role: string): string {

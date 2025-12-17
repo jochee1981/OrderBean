@@ -43,7 +43,7 @@ export const authenticate = (
 export const authorize = (...roles: string[]) => {
   return (req: AuthRequest, _res: Response, next: NextFunction) => {
     if (!req.user) {
-      return next(new AppError('Unauthorized', 401))
+      return next(new AppError('Unauthorized', 401, 'UNAUTHORIZED'))
     }
 
     // Normalize role comparison (handle both 'ADMIN' and 'admin')
@@ -51,7 +51,15 @@ export const authorize = (...roles: string[]) => {
     const normalizedRoles = roles.map(r => r.toUpperCase())
     
     if (!normalizedRoles.includes(userRole)) {
-      return next(new AppError('Forbidden', 403))
+      // Provide more specific error message
+      const requiredRoles = roles.join(' or ')
+      return next(
+        new AppError(
+          `Access denied. ${requiredRoles} role required.`,
+          403,
+          'FORBIDDEN'
+        )
+      )
     }
 
     next()
