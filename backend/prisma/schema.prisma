@@ -66,6 +66,7 @@ model Menu {
   price       Int
   image_url   String?  @map("image_url")
   category    String?
+  stock       Int?      // 재고 (nullable, 선택적)
   is_active   Boolean  @default(true)
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
