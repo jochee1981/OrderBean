@@ -13,10 +13,10 @@ const router = Router()
 router.use(authenticate)
 router.use(authorize('admin'))
 
-router.get('/orders/dashboard', getOrderDashboard)
+router.get('/dashboard', getOrderDashboard)
 router.patch('/orders/:id/status', updateOrderStatus)
-router.get('/analytics/orders', getOrderAnalytics)
-router.get('/analytics/menus', getMenuAnalytics)
+router.get('/analytics', getOrderAnalytics)
+router.get('/menu-analytics', getMenuAnalytics)
 
 export default router
 

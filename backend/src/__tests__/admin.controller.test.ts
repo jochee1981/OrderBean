@@ -12,6 +12,7 @@ describe('Admin Controller', () => {
       email: `admin-${Date.now()}@example.com`,
       password: 'Admin1234!',
       name: 'Admin User',
+      role: 'ADMIN',
     })
 
     // Create customer user
@@ -19,10 +20,8 @@ describe('Admin Controller', () => {
       email: `customer-${Date.now()}@example.com`,
       password: 'Customer1234!',
       name: 'Customer User',
+      role: 'CUSTOMER',
     })
-
-    // Note: In real implementation, admin role should be set during user creation
-    // For now, tests will check for proper authorization
   })
 
   describe('GET /api/v1/admin/dashboard', () => {
