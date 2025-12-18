@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { ROUTES } from '@/constants/routes'
 
 export default function HomePage() {
   return (
@@ -11,7 +12,7 @@ export default function HomePage() {
           빠르고 편리한 커피 주문 서비스
         </p>
         <Link
-          to="/menu"
+          to={ROUTES.CUSTOMER.MENU}
           className="inline-block bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition"
         >
           메뉴 보기

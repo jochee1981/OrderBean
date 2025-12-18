@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/stores/authStore'
 import api from '@/lib/api'
+import { ROUTES } from '@/constants/routes'
+import { parseUserRole } from '@/types/auth'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -24,16 +26,16 @@ export default function LoginPage() {
         id: user.id,
         email: user.email,
         name: user.name,
-        role: user.role.toLowerCase() === 'admin' ? 'admin' : 'customer',
+        role: parseUserRole(user.role)
       })
       setToken(token)
       localStorage.setItem('token', token)
 
       // Redirect based on role
       if (user.role === 'ADMIN' || user.role === 'admin') {
-        navigate('/admin/dashboard')
+        navigate(ROUTES.ADMIN.DASHBOARD)
       } else {
-        navigate('/')
+        navigate(ROUTES.HOME)
       }
     } catch (err: any) {
       setError(err.response?.data?.message || '로그인에 실패했습니다.')

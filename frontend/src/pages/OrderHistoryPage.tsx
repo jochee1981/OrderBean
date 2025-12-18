@@ -1,5 +1,6 @@
 import { useOrderStore } from '@/stores/orderStore'
 import { Link } from 'react-router-dom'
+import { ROUTES } from '@/constants/routes'
 
 export default function OrderHistoryPage() {
   const { orders } = useOrderStore()
@@ -65,7 +66,7 @@ export default function OrderHistoryPage() {
           <h2 className="text-2xl font-bold text-gray-900 mb-2">주문 내역이 없습니다</h2>
           <p className="text-gray-600 mb-6">첫 주문을 시작해보세요!</p>
           <Link
-            to="/menu"
+            to={ROUTES.CUSTOMER.MENU}
             className="inline-block bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-600 transition-colors font-semibold"
           >
             메뉴 보러가기

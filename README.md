@@ -1695,9 +1695,9 @@ This project is proprietary and confidential.
    - [x] constants 폴더 생성 (상수 관리)
 
 4. **라우팅 정리**
-   - [ ] 중복 라우트 제거
-   - [ ] 라우트 경로 상수화 (constants/routes.ts)
-   - [ ] ProtectedRoute 컴포넌트 구현
+   - [x] 중복 라우트 제거 (admin 라우트 정리)
+   - [x] 라우트 경로 상수화 (constants/routes.ts 사용)
+   - [x] ProtectedRoute 컴포넌트 구현
 
 #### Phase 2: 타입 시스템 강화 (최우선) 🔴
 1. **역할(Role) 타입 통일**
@@ -1904,7 +1904,7 @@ This project is proprietary and confidential.
    - [ ] 재고 실시간 반영
 
 #### 리팩토링 진행 상황
-- **Phase 1**: 15/17 완료 (88%)
+- **Phase 1**: 17/17 완료 (100%) ✅
 - **Phase 2**: 0/14 완료
 - **Phase 3**: 0/10 완료
 - **Phase 4**: 0/27 완료
@@ -1915,7 +1915,7 @@ This project is proprietary and confidential.
 - **Phase 9**: 0/13 완료
 - **Phase 10**: 0/6 완료
 
-**총 진행률**: 15/144 (10.4%)
+**총 진행률**: 17/144 (11.8%)
 
 #### 예상 일정
 - **Phase 1-3 (최우선)**: 2주
