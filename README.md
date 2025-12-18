@@ -1670,11 +1670,261 @@ This project is proprietary and confidential.
    - [x] 복합 인덱스 최적화 (대시보드, 통계 조회)
    - [x] 캐싱 전략 개선 (이미 Redis 캐싱 구현됨)
 
-### 🔵 REFACTOR 단계 (예정)
-- [ ] 코드 리팩토링
-- [ ] 중복 코드 제거
-- [ ] 성능 최적화
-- [ ] 문서화
+### 🔵 REFACTOR 단계 (진행 중)
+
+#### Phase 1: 구조 정리 (최우선) 🔴
+1. **중복 파일 제거**
+   - [x] AdminDashboard.tsx와 admin/DashboardPage.tsx 중복 해결
+   - [x] 관리자 페이지 구조 통일 (admin 폴더로 일원화)
+   - [x] 사용하지 않는 컴포넌트 정리
+
+2. **빈 페이지 처리**
+   - [ ] OrderPage.tsx 기능 구현 또는 제거
+   - [ ] OrderHistoryPage.tsx 기능 구현 또는 제거
+   - [ ] admin/DashboardPage.tsx 기능 구현
+   - [ ] admin/MenuPage.tsx 기능 구현
+   - [ ] admin/OrdersPage.tsx 기능 구현
+   - [ ] 미구현 페이지에 "준비 중" UI 추가
+
+3. **폴더 구조 개선**
+   - [ ] components를 기능별로 분류 (common, layout, menu, cart, admin)
+   - [ ] pages를 customer/admin으로 분리
+   - [ ] hooks 폴더 생성 및 커스텀 훅 분리
+   - [ ] services 폴더 생성 (API 서비스 레이어)
+   - [ ] types 폴더 생성 (공통 타입 정의)
+   - [ ] constants 폴더 생성 (상수 관리)
+
+4. **라우팅 정리**
+   - [ ] 중복 라우트 제거
+   - [ ] 라우트 경로 상수화 (constants/routes.ts)
+   - [ ] ProtectedRoute 컴포넌트 구현
+
+#### Phase 2: 타입 시스템 강화 (최우선) 🔴
+1. **역할(Role) 타입 통일**
+   - [ ] UserRole enum 정의 (types/auth.ts)
+   - [ ] 'admin' | 'ADMIN' | 'customer' | 'CUSTOMER' 통일
+   - [ ] isAdmin, isCustomer 유틸리티 함수 구현
+   - [ ] 모든 역할 체크 로직 수정
+
+2. **공통 타입 정의**
+   - [ ] types/menu.ts 생성 (Menu, ProductOption)
+   - [ ] types/order.ts 생성 (Order, OrderItem)
+   - [ ] types/cart.ts 생성 (CartItem)
+   - [ ] types/auth.ts 생성 (User, AuthState)
+   - [ ] types/api.ts 생성 (ApiResponse, PaginatedResponse)
+   - [ ] types/inventory.ts 생성 (InventoryItem)
+
+3. **타입 안정성 향상**
+   - [ ] ID 타입 브랜딩 (OrderId, MenuId)
+   - [ ] API 응답 타입 정의
+   - [ ] 엄격한 null 체크 활성화
+
+#### Phase 3: 인증 및 보안 강화 (최우선) 🔴
+1. **인증 보호 구현**
+   - [ ] ProtectedRoute 컴포넌트 구현
+   - [ ] 관리자 라우트에 접근 제어 추가
+   - [ ] 로그인하지 않은 사용자 리다이렉트
+   - [ ] 권한 없는 사용자 접근 차단
+
+2. **토큰 관리 개선**
+   - [ ] tokenManager 유틸리티 구현
+   - [ ] authStore와 localStorage 동기화 개선
+   - [ ] 토큰 만료 처리 로직 추가
+   - [ ] JWT 검증 로직 추가
+
+3. **보안 취약점 수정**
+   - [ ] XSS 방지 (DOMPurify 도입)
+   - [ ] 사용자 입력 sanitization
+   - [ ] CSRF 토큰 고려
+
+#### Phase 4: 컴포넌트 리팩토링 (높음) 🟡
+1. **MenuPage 분해** (312줄 → 50줄)
+   - [ ] MenuGrid 컴포넌트 분리
+   - [ ] MenuCard 컴포넌트 분리
+   - [ ] MenuImage 컴포넌트 분리
+   - [ ] MenuInfo 컴포넌트 분리
+   - [ ] OptionSelector 컴포넌트 분리
+   - [ ] Cart 컴포넌트 분리
+   - [ ] CartItem 컴포넌트 분리
+   - [ ] CartSummary 컴포넌트 분리
+   - [ ] EmptyCart 컴포넌트 분리
+
+2. **AdminDashboard 분해** (294줄 → 60줄)
+   - [ ] DashboardStats 컴포넌트 분리
+   - [ ] StatCard 컴포넌트 분리
+   - [ ] InventoryManagement 컴포넌트 분리
+   - [ ] InventoryCard 컴포넌트 분리
+   - [ ] OrderManagement 컴포넌트 분리
+   - [ ] OrderCard 컴포넌트 분리
+   - [ ] OrderStatusBadge 컴포넌트 분리
+
+3. **Layout 분해**
+   - [ ] Header 컴포넌트 분리
+   - [ ] Navigation 컴포넌트 분리
+   - [ ] UserMenu 컴포넌트 분리
+   - [ ] Layout은 레이아웃만 담당
+
+4. **공통 컴포넌트 생성**
+   - [ ] Button 컴포넌트
+   - [ ] Card 컴포넌트
+   - [ ] Badge 컴포넌트
+   - [ ] LoadingSpinner 컴포넌트
+   - [ ] ErrorMessage 컴포넌트
+
+#### Phase 5: 상태 관리 개선 (높음) 🟡
+1. **React Query 도입**
+   - [ ] QueryClientProvider 설정
+   - [ ] useMenus 훅 구현
+   - [ ] useOrders 훅 구현
+   - [ ] useInventory 훅 구현
+   - [ ] usePlaceOrder mutation 구현
+   - [ ] useUpdateStock mutation 구현
+   - [ ] useUpdateOrderStatus mutation 구현
+
+2. **API 서비스 레이어 구축**
+   - [ ] services/authService.ts 생성
+   - [ ] services/menuService.ts 생성
+   - [ ] services/orderService.ts 생성
+   - [ ] services/inventoryService.ts 생성
+   - [ ] API 에러 처리 통일
+
+3. **전역 상태 정리**
+   - [ ] authStore 개선 (localStorage 통합)
+   - [ ] cartStore 검토 및 개선
+   - [ ] orderStore를 React Query로 마이그레이션
+   - [ ] 재고 데이터 전역 상태화
+
+4. **커스텀 훅 구현**
+   - [ ] hooks/useAuth.ts
+   - [ ] hooks/useCart.ts
+   - [ ] hooks/useMenus.ts
+   - [ ] hooks/useOrders.ts
+   - [ ] hooks/useInventory.ts
+
+#### Phase 6: 데이터 및 상수 관리 (중간) 🟢
+1. **하드코딩 데이터 분리**
+   - [ ] 메뉴 데이터를 constants/menus.ts로 이동
+   - [ ] 재고 데이터를 constants/inventory.ts로 이동
+   - [ ] Mock 데이터와 실제 API 분리
+
+2. **매직 넘버/문자열 상수화**
+   - [ ] 재고 임계값 상수화 (STOCK_THRESHOLDS)
+   - [ ] 재고 상태 상수화 (STOCK_STATUS)
+   - [ ] 주문 상태 상수화 (ORDER_STATUS)
+   - [ ] API 엔드포인트 상수화
+   - [ ] 에러 메시지 상수화
+
+3. **상수 파일 생성**
+   - [ ] constants/routes.ts (라우트 경로)
+   - [ ] constants/api.ts (API 엔드포인트)
+   - [ ] constants/inventory.ts (재고 관련)
+   - [ ] constants/order.ts (주문 관련)
+   - [ ] constants/messages.ts (메시지)
+
+#### Phase 7: 성능 최적화 (중간) 🟢
+1. **메모이제이션 적용**
+   - [ ] 가격 계산 로직 useMemo
+   - [ ] 필터링/정렬 로직 useMemo
+   - [ ] 복잡한 계산 useMemo
+
+2. **컴포넌트 최적화**
+   - [ ] React.memo 적용 (OrderCard)
+   - [ ] React.memo 적용 (InventoryCard)
+   - [ ] React.memo 적용 (MenuCard)
+   - [ ] React.memo 적용 (CartItem)
+   - [ ] useCallback으로 함수 메모이제이션
+
+3. **이미지 최적화**
+   - [ ] 반응형 이미지 (srcSet, sizes)
+   - [ ] 이미지 로딩 상태 관리
+   - [ ] 이미지 지연 로딩 (lazy loading)
+   - [ ] 이미지 폴백 처리
+   - [ ] WebP 포맷 고려
+
+4. **번들 최적화**
+   - [ ] 코드 스플리팅 (React.lazy)
+   - [ ] 라우트 기반 청크 분할
+   - [ ] 불필요한 의존성 제거
+   - [ ] Tree shaking 확인
+
+#### Phase 8: 코드 품질 향상 (중간) 🟢
+1. **주석 및 문서화**
+   - [ ] 복잡한 로직에 주석 추가
+   - [ ] JSDoc 주석 작성
+   - [ ] README 업데이트
+   - [ ] 컴포넌트 문서화
+
+2. **유틸리티 함수 분리**
+   - [ ] utils/format.ts (날짜, 가격 포맷팅)
+   - [ ] utils/validation.ts (유효성 검증)
+   - [ ] utils/token.ts (토큰 관리)
+   - [ ] utils/sanitize.ts (XSS 방지)
+   - [ ] utils/array.ts (배열 유틸)
+
+3. **린터 규칙 강화**
+   - [ ] ESLint 규칙 추가
+   - [ ] Prettier 설정 검토
+   - [ ] import 순서 정리
+   - [ ] 사용하지 않는 import 제거
+
+#### Phase 9: 테스트 커버리지 향상 (중간) 🟢
+1. **단위 테스트 추가**
+   - [ ] stores/authStore.test.ts
+   - [ ] stores/cartStore.test.ts (기존 테스트 보완)
+   - [ ] hooks/useAuth.test.ts
+   - [ ] hooks/useCart.test.ts
+   - [ ] utils 함수 테스트
+
+2. **컴포넌트 테스트 추가**
+   - [ ] components/menu/MenuCard.test.tsx
+   - [ ] components/cart/Cart.test.tsx
+   - [ ] components/admin/OrderCard.test.tsx
+   - [ ] components/layout/Header.test.tsx
+
+3. **통합 테스트 추가**
+   - [ ] 주문 플로우 테스트
+   - [ ] 인증 플로우 테스트
+   - [ ] 관리자 플로우 테스트
+
+4. **테스트 커버리지 목표**
+   - [ ] 전체 커버리지 50% 이상
+   - [ ] 핵심 로직 80% 이상
+   - [ ] 비즈니스 로직 90% 이상
+
+#### Phase 10: WebSocket 및 실시간 기능 (낮음) 
+1. **WebSocket 연결**
+   - [ ] Socket.IO 클라이언트 설정
+   - [ ] 실시간 주문 수신
+   - [ ] 주문 상태 변경 알림
+   - [ ] 연결 실패 시 폴링 폴백
+
+2. **실시간 업데이트**
+   - [ ] 새 주문 알림
+   - [ ] 대시보드 자동 갱신
+   - [ ] 재고 실시간 반영
+
+#### 리팩토링 진행 상황
+- **Phase 1**: 3/13 완료 (23%)
+- **Phase 2**: 0/14 완료
+- **Phase 3**: 0/10 완료
+- **Phase 4**: 0/27 완료
+- **Phase 5**: 0/19 완료
+- **Phase 6**: 0/13 완료
+- **Phase 7**: 0/14 완료
+- **Phase 8**: 0/11 완료
+- **Phase 9**: 0/13 완료
+- **Phase 10**: 0/6 완료
+
+**총 진행률**: 3/140 (2.1%)
+
+#### 예상 일정
+- **Phase 1-3 (최우선)**: 2주
+- **Phase 4-5 (높음)**: 3주
+- **Phase 6-9 (중간)**: 3주
+- **Phase 10 (낮음)**: 1주
+- **총 예상 기간**: 9주
+
+> 📊 상세 분석: [프론트엔드 리팩토링 분석 보고서](./Report/FRONTEND_CODE_REFACTORING_ANALYSIS.md)
 
 ## 우선순위 표시
 - 🔴 **최우선**: 테스트 실행을 위해 반드시 필요

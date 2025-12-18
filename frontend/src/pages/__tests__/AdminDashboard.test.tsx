@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import Layout from '@/components/Layout'
-import AdminDashboard from '../AdminDashboard'
+import AdminDashboardPage from '../admin/DashboardPage'
 
 const renderWithRouter = (component: React.ReactElement) => {
   return render(
@@ -16,19 +16,19 @@ const renderWithRouter = (component: React.ReactElement) => {
   )
 }
 
-describe('AdminDashboard - 관리자 대시보드', () => {
+describe('AdminDashboardPage - 관리자 대시보드', () => {
   beforeEach(() => {
     // 각 테스트 전에 초기화
   })
 
   // ============ 대시보드 통계 테스트 ============
   it('should render 관리자 대시보드 title', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     expect(screen.getByText('관리자 대시보드')).toBeInTheDocument()
   })
 
   it('should display 총 주문 count', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     expect(screen.getByText('총 주문')).toBeInTheDocument()
     // 숫자가 표시되어야 함
     const countElements = screen.getAllByTestId(/stat-count/)
@@ -36,34 +36,34 @@ describe('AdminDashboard - 관리자 대시보드', () => {
   })
 
   it('should display 주문 접수 count', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     expect(screen.getByText('주문 접수')).toBeInTheDocument()
   })
 
   it('should display 제조 중 count', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     expect(screen.getByText('제조 중')).toBeInTheDocument()
   })
 
   it('should display 제조 완료 count', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     expect(screen.getByText('제조 완료')).toBeInTheDocument()
   })
 
   // ============ 재고 현황 테스트 ============
   it('should render 재고 현황 section', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     expect(screen.getByText('재고 현황')).toBeInTheDocument()
   })
 
   it('should display 3 menu items in inventory', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     const inventoryItems = screen.getAllByTestId('inventory-item')
     expect(inventoryItems.length).toBeGreaterThanOrEqual(3)
   })
 
   it('should display stock count for each menu', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     const inventoryItems = screen.getAllByTestId('inventory-item')
     inventoryItems.forEach((item) => {
       // 각 항목에 재고 개수가 표시되어야 함
@@ -72,47 +72,47 @@ describe('AdminDashboard - 관리자 대시보드', () => {
   })
 
   it('should display stock status badge (정상/주의/품절)', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     // 재고 상태 배지가 표시되어야 함
     const statusBadges = screen.queryAllByTestId('stock-status')
     expect(statusBadges.length).toBeGreaterThan(0)
   })
 
   it('should show "주의" badge when stock is less than 5', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     // 재고가 5개 미만일 때 '주의' 배지 표시
     const warningBadges = screen.queryAllByText('주의')
     // 재고가 5개 미만인 항목이 있을 수 있음
   })
 
   it('should show "품절" badge when stock is 0', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     // 재고가 0개일 때 '품절' 배지 표시
     const outOfStockBadges = screen.queryAllByText('품절')
     // 재고가 0개인 항목이 있을 수 있음
   })
 
   it('should show "정상" badge when stock is 5 or more', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     // 재고가 5개 이상일 때 '정상' 배지 표시
     const normalBadges = screen.queryAllByText('정상')
     // 재고가 5개 이상인 항목이 있을 수 있음
   })
 
   it('should have + button for each inventory item', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     const plusButtons = screen.getAllByTestId('stock-increase-btn')
     expect(plusButtons.length).toBeGreaterThanOrEqual(3)
   })
 
   it('should have - button for each inventory item', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     const minusButtons = screen.getAllByTestId('stock-decrease-btn')
     expect(minusButtons.length).toBeGreaterThanOrEqual(3)
   })
 
   it('should increase stock when + button is clicked', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     const inventoryItems = screen.getAllByTestId('inventory-item')
     const firstItem = inventoryItems[0]
     const initialStock = firstItem.textContent?.match(/(\d+)개/)?.[1]
@@ -128,7 +128,7 @@ describe('AdminDashboard - 관리자 대시보드', () => {
   })
 
   it('should decrease stock when - button is clicked', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     const inventoryItems = screen.getAllByTestId('inventory-item')
     const firstItem = inventoryItems[0]
     const initialStock = firstItem.textContent?.match(/(\d+)개/)?.[1]
@@ -145,12 +145,12 @@ describe('AdminDashboard - 관리자 대시보드', () => {
 
   // ============ 주문 현황 테스트 ============
   it('should render 주문 현황 section', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     expect(screen.getByText('주문 현황')).toBeInTheDocument()
   })
 
   it('should display order date and time', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     // 주문 일자/시간이 표시되어야 함 (형식: YYYY-MM-DD HH:mm 또는 M월 D일 HH:mm)
     const orderItems = screen.queryAllByTestId('order-item')
     if (orderItems.length > 0) {
@@ -159,7 +159,7 @@ describe('AdminDashboard - 관리자 대시보드', () => {
   })
 
   it('should display order menu and quantity', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     const orderItems = screen.queryAllByTestId('order-item')
     if (orderItems.length > 0) {
       // 주문 메뉴와 수량이 표시되어야 함 (형식: 메뉴명 x 수량)
@@ -168,7 +168,7 @@ describe('AdminDashboard - 관리자 대시보드', () => {
   })
 
   it('should display order amount', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     const orderItems = screen.queryAllByTestId('order-item')
     if (orderItems.length > 0) {
       // 주문 금액이 표시되어야 함
@@ -177,7 +177,7 @@ describe('AdminDashboard - 관리자 대시보드', () => {
   })
 
   it('should display order status as "주문 접수" initially', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     const statusButtons = screen.queryAllByText('제조 시작')
     // 주문 접수 상태일 때 '제조 시작' 버튼이 표시되어야 함
     if (statusButtons.length > 0) {
@@ -186,13 +186,13 @@ describe('AdminDashboard - 관리자 대시보드', () => {
   })
 
   it('should have "제조 시작" button for pending orders', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     const startButtons = screen.queryAllByText('제조 시작')
     // 주문 접수 상태의 주문에는 '제조 시작' 버튼이 있어야 함
   })
 
   it('should change status to "제조 중" when "제조 시작" button is clicked', () => {
-    renderWithRouter(<AdminDashboard />)
+    renderWithRouter(<AdminDashboardPage />)
     const startButtons = screen.queryAllByText('제조 시작')
     if (startButtons.length > 0) {
       fireEvent.click(startButtons[0])
