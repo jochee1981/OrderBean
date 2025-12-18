@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useCartStore, CartItem } from '@/stores/cartStore'
 import { useOrderStore } from '@/stores/orderStore'
-import { useNavigate } from 'react-router-dom'
 
 interface ProductOption {
   id: string
@@ -79,7 +78,6 @@ const menus: Menu[] = [
 export default function MenuPage() {
   const { items, addItem, getTotal, clearCart } = useCartStore()
   const { addOrder } = useOrderStore()
-  const navigate = useNavigate()
   const [selectedOptions, setSelectedOptions] = useState<{
     [key: string]: string[]
   }>({})
@@ -131,7 +129,7 @@ export default function MenuPage() {
 
     // 주문 데이터 생성
     const orderItems = items.map((item) => ({
-      menuName: item.options.length > 0 
+      menuName: (item.options && item.options.length > 0)
         ? `${item.name} (${item.options.join(', ')})`
         : item.name,
       quantity: item.quantity,

@@ -1679,12 +1679,12 @@ This project is proprietary and confidential.
    - [x] 사용하지 않는 컴포넌트 정리
 
 2. **빈 페이지 처리**
-   - [ ] OrderPage.tsx 기능 구현 또는 제거
-   - [ ] OrderHistoryPage.tsx 기능 구현 또는 제거
-   - [ ] admin/DashboardPage.tsx 기능 구현
-   - [ ] admin/MenuPage.tsx 기능 구현
-   - [ ] admin/OrdersPage.tsx 기능 구현
-   - [ ] 미구현 페이지에 "준비 중" UI 추가
+   - [x] OrderPage.tsx 기능 구현 또는 제거 (MenuPage로 리다이렉트)
+   - [x] OrderHistoryPage.tsx 기능 구현 (주문 내역 조회)
+   - [x] admin/DashboardPage.tsx 기능 구현 (이전 단계에서 완료)
+   - [x] admin/MenuPage.tsx 기능 구현 ("준비 중" UI)
+   - [x] admin/OrdersPage.tsx 기능 구현 ("준비 중" UI)
+   - [x] 미구현 페이지에 "준비 중" UI 추가
 
 3. **폴더 구조 개선**
    - [ ] components를 기능별로 분류 (common, layout, menu, cart, admin)
@@ -1904,7 +1904,7 @@ This project is proprietary and confidential.
    - [ ] 재고 실시간 반영
 
 #### 리팩토링 진행 상황
-- **Phase 1**: 3/13 완료 (23%)
+- **Phase 1**: 9/13 완료 (69%)
 - **Phase 2**: 0/14 완료
 - **Phase 3**: 0/10 완료
 - **Phase 4**: 0/27 완료
@@ -1915,7 +1915,7 @@ This project is proprietary and confidential.
 - **Phase 9**: 0/13 완료
 - **Phase 10**: 0/6 완료
 
-**총 진행률**: 3/140 (2.1%)
+**총 진행률**: 9/140 (6.4%)
 
 #### 예상 일정
 - **Phase 1-3 (최우선)**: 2주
