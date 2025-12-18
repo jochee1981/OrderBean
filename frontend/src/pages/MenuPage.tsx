@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useCartStore, CartItem } from '@/stores/cartStore'
+import { useOrderStore } from '@/stores/orderStore'
+import { useNavigate } from 'react-router-dom'
 
 interface ProductOption {
   id: string
@@ -22,7 +24,7 @@ const menus: Menu[] = [
     name: '아메리카노 (ICE)',
     price: 4000,
     description: '시원하고 깔끔한 아이스 아메리카노',
-    imageUrl: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=500&h=400&fit=crop&q=85',
+    imageUrl: '/images/ice-americano.png',
     options: [
       { id: 'shot', name: '샷 추가', priceAdjustment: 500 },
       { id: 'syrup', name: '시럽 추가', priceAdjustment: 0 },
@@ -33,7 +35,7 @@ const menus: Menu[] = [
     name: '아메리카노 (HOT)',
     price: 4000,
     description: '따뜻하고 진한 핫 아메리카노',
-    imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&h=400&fit=crop&q=85',
+    imageUrl: '/images/hot-americano.png',
     options: [
       { id: 'shot', name: '샷 추가', priceAdjustment: 500 },
       { id: 'syrup', name: '시럽 추가', priceAdjustment: 0 },
@@ -75,7 +77,9 @@ const menus: Menu[] = [
 ]
 
 export default function MenuPage() {
-  const { items, addItem, getTotal } = useCartStore()
+  const { items, addItem, getTotal, clearCart } = useCartStore()
+  const { addOrder } = useOrderStore()
+  const navigate = useNavigate()
   const [selectedOptions, setSelectedOptions] = useState<{
     [key: string]: string[]
   }>({})
@@ -120,6 +124,28 @@ export default function MenuPage() {
       ...prev,
       [menu.id]: [],
     }))
+  }
+
+  const handleOrder = () => {
+    if (items.length === 0) return
+
+    // 주문 데이터 생성
+    const orderItems = items.map((item) => ({
+      menuName: item.options.length > 0 
+        ? `${item.name} (${item.options.join(', ')})`
+        : item.name,
+      quantity: item.quantity,
+      subtotal: item.price * item.quantity,
+    }))
+
+    // 주문 추가
+    addOrder(orderItems, getTotal())
+
+    // 장바구니 비우기
+    clearCart()
+
+    // 성공 알림
+    alert('주문이 완료되었습니다! 관리자 대시보드에서 확인할 수 있습니다.')
   }
 
   return (
@@ -270,7 +296,9 @@ export default function MenuPage() {
               </div>
               <button
                 data-testid="order-button"
-                className="w-full bg-purple-500 text-white py-3 px-4 rounded-md hover:bg-purple-600 transition-colors font-semibold"
+                onClick={handleOrder}
+                disabled={items.length === 0}
+                className="w-full bg-purple-500 text-white py-3 px-4 rounded-md hover:bg-purple-600 transition-colors font-semibold disabled:bg-gray-300 disabled:cursor-not-allowed"
               >
                 주문하기
               </button>
