@@ -12,13 +12,13 @@ export interface AuthRequest extends Request {
 
 export const authenticate = (
   req: AuthRequest,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) => {
   try {
     const authHeader = req.headers.authorization
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new AppError('Unauthorized', 401)
+      throw new AppError('Unauthorized', 401, 'UNAUTHORIZED')
     }
 
     const token = authHeader.substring(7)
@@ -36,18 +36,34 @@ export const authenticate = (
     req.user = decoded
     next()
   } catch (error) {
-    next(new AppError('Unauthorized', 401))
+    if (error instanceof AppError) {
+      next(error)
+    } else {
+      next(new AppError('Unauthorized', 401, 'UNAUTHORIZED'))
+    }
   }
 }
 
 export const authorize = (...roles: string[]) => {
-  return (req: AuthRequest, res: Response, next: NextFunction) => {
+  return (req: AuthRequest, _res: Response, next: NextFunction) => {
     if (!req.user) {
-      return next(new AppError('Unauthorized', 401))
+      return next(new AppError('Unauthorized', 401, 'UNAUTHORIZED'))
     }
 
-    if (!roles.includes(req.user.role)) {
-      return next(new AppError('Forbidden', 403))
+    // Normalize role comparison (handle both 'ADMIN' and 'admin')
+    const userRole = req.user.role.toUpperCase()
+    const normalizedRoles = roles.map(r => r.toUpperCase())
+    
+    if (!normalizedRoles.includes(userRole)) {
+      // Provide more specific error message
+      const requiredRoles = roles.join(' or ')
+      return next(
+        new AppError(
+          `Access denied. ${requiredRoles} role required.`,
+          403,
+          'FORBIDDEN'
+        )
+      )
     }
 
     next()

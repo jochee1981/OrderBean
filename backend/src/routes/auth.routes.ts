@@ -1,5 +1,7 @@
 import { Router } from 'express'
 import { signup, login, logout, refresh } from '../controllers/auth.controller'
+import { validateRequest } from '../middleware/validation.middleware'
+import { signupSchema, loginSchema } from '../schemas/auth.schema'
 
 const router = Router()
 
@@ -30,7 +32,7 @@ const router = Router()
  *       201:
  *         description: 회원가입 성공
  */
-router.post('/signup', signup)
+router.post('/signup', validateRequest(signupSchema), signup)
 
 /**
  * @swagger
@@ -56,7 +58,7 @@ router.post('/signup', signup)
  *       200:
  *         description: 로그인 성공
  */
-router.post('/login', login)
+router.post('/login', validateRequest(loginSchema), login)
 router.post('/logout', logout)
 router.post('/refresh', refresh)
 

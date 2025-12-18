@@ -1,25 +1,19 @@
 import { create } from 'zustand'
-
-interface User {
-  id: string
-  email: string
-  name: string
-  role: 'customer' | 'admin'
-}
-
-interface AuthState {
-  user: User | null
-  token: string | null
-  setUser: (user: User | null) => void
-  setToken: (token: string | null) => void
-  logout: () => void
-}
+import type { User, AuthState } from '@/types/auth'
+import { tokenManager } from '@/utils/token'
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   token: null,
   setUser: (user) => set({ user }),
-  setToken: (token) => set({ token }),
-  logout: () => set({ user: null, token: null }),
+  setToken: (token) => {
+    if (token) {
+      tokenManager.set(token)
+    }
+    set({ token })
+  },
+  logout: () => {
+    tokenManager.remove()
+    set({ user: null, token: null })
+  },
 }))
-
