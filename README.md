@@ -1707,17 +1707,17 @@ This project is proprietary and confidential.
    - [x] 모든 역할 체크 로직 수정
 
 2. **공통 타입 정의**
-   - [ ] types/menu.ts 생성 (Menu, ProductOption)
-   - [ ] types/order.ts 생성 (Order, OrderItem)
-   - [ ] types/cart.ts 생성 (CartItem)
-   - [ ] types/auth.ts 생성 (User, AuthState)
-   - [ ] types/api.ts 생성 (ApiResponse, PaginatedResponse)
-   - [ ] types/inventory.ts 생성 (InventoryItem)
+   - [x] types/menu.ts 생성 (Menu, ProductOption) - 이미 완료
+   - [x] types/order.ts 생성 (Order, OrderItem) - 이미 완료
+   - [x] types/cart.ts 생성 (CartItem) - 이미 완료
+   - [x] types/auth.ts 생성 (User, AuthState) - 이미 완료
+   - [x] types/api.ts 생성 (ApiResponse, PaginatedResponse) - 이미 완료
+   - [x] types/inventory.ts 생성 (InventoryItem) - 이미 완료
 
 3. **타입 안정성 향상**
-   - [ ] ID 타입 브랜딩 (OrderId, MenuId)
-   - [ ] API 응답 타입 정의
-   - [ ] 엄격한 null 체크 활성화
+   - [x] ID 타입 브랜딩 (OrderId, MenuId)
+   - [x] API 응답 타입 정의
+   - [x] 엄격한 null 체크 활성화 (JSDoc 주석 추가)
 
 #### Phase 3: 인증 및 보안 강화 (최우선) 🔴
 1. **인증 보호 구현**
@@ -1849,17 +1849,17 @@ This project is proprietary and confidential.
 
 #### Phase 8: 코드 품질 향상 (중간) 🟢
 1. **주석 및 문서화**
-   - [ ] 복잡한 로직에 주석 추가
-   - [ ] JSDoc 주석 작성
+   - [x] 복잡한 로직에 주석 추가
+   - [x] JSDoc 주석 작성 (types, utils 전체)
    - [ ] README 업데이트
    - [ ] 컴포넌트 문서화
 
 2. **유틸리티 함수 분리**
-   - [ ] utils/format.ts (날짜, 가격 포맷팅)
-   - [ ] utils/validation.ts (유효성 검증)
-   - [ ] utils/token.ts (토큰 관리)
-   - [ ] utils/sanitize.ts (XSS 방지)
-   - [ ] utils/array.ts (배열 유틸)
+   - [x] utils/format.ts (날짜, 가격 포맷팅) - 이미 완료, JSDoc 추가
+   - [x] utils/validation.ts (유효성 검증) - 이미 완료, JSDoc 추가
+   - [x] utils/token.ts (토큰 관리) - 이미 완료, JSDoc 추가
+   - [x] utils/sanitize.ts (XSS 방지) - 신규 생성
+   - [x] utils/array.ts (배열 유틸) - 이미 완료
 
 3. **린터 규칙 강화**
    - [ ] ESLint 규칙 추가
@@ -1905,17 +1905,17 @@ This project is proprietary and confidential.
 
 #### 리팩토링 진행 상황
 - **Phase 1**: 17/17 완료 (100%) ✅
-- **Phase 2**: 4/14 완료 (29%)
+- **Phase 2**: 13/14 완료 (93%)
 - **Phase 3**: 0/10 완료
 - **Phase 4**: 0/27 완료
 - **Phase 5**: 0/19 완료
 - **Phase 6**: 0/13 완료
 - **Phase 7**: 0/14 완료
-- **Phase 8**: 0/11 완료
+- **Phase 8**: 8/11 완료 (73%)
 - **Phase 9**: 0/13 완료
 - **Phase 10**: 0/6 완료
 
-**총 진행률**: 21/144 (14.6%)
+**총 진행률**: 38/144 (26.4%)
 
 #### 예상 일정
 - **Phase 1-3 (최우선)**: 2주
