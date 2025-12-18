@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
-import Layout from '@/components/Layout'
+import { Layout } from '@/components/layout'
 import AdminDashboardPage from '../admin/DashboardPage'
 
 const renderWithRouter = (component: React.ReactElement) => {

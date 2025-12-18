@@ -1687,12 +1687,12 @@ This project is proprietary and confidential.
    - [x] 미구현 페이지에 "준비 중" UI 추가
 
 3. **폴더 구조 개선**
-   - [ ] components를 기능별로 분류 (common, layout, menu, cart, admin)
-   - [ ] pages를 customer/admin으로 분리
-   - [ ] hooks 폴더 생성 및 커스텀 훅 분리
-   - [ ] services 폴더 생성 (API 서비스 레이어)
-   - [ ] types 폴더 생성 (공통 타입 정의)
-   - [ ] constants 폴더 생성 (상수 관리)
+   - [x] components를 기능별로 분류 (common, layout, menu, cart, admin)
+   - [x] pages를 customer/admin으로 분리 (이미 분리되어 있음)
+   - [x] hooks 폴더 생성 및 커스텀 훅 분리
+   - [x] services 폴더 생성 (API 서비스 레이어)
+   - [x] types 폴더 생성 (공통 타입 정의)
+   - [x] constants 폴더 생성 (상수 관리)
 
 4. **라우팅 정리**
    - [ ] 중복 라우트 제거
@@ -1904,7 +1904,7 @@ This project is proprietary and confidential.
    - [ ] 재고 실시간 반영
 
 #### 리팩토링 진행 상황
-- **Phase 1**: 9/13 완료 (69%)
+- **Phase 1**: 15/17 완료 (88%)
 - **Phase 2**: 0/14 완료
 - **Phase 3**: 0/10 완료
 - **Phase 4**: 0/27 완료
@@ -1915,7 +1915,7 @@ This project is proprietary and confidential.
 - **Phase 9**: 0/13 완료
 - **Phase 10**: 0/6 완료
 
-**총 진행률**: 9/140 (6.4%)
+**총 진행률**: 15/144 (10.4%)
 
 #### 예상 일정
 - **Phase 1-3 (최우선)**: 2주
