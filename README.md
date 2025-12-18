@@ -1701,10 +1701,10 @@ This project is proprietary and confidential.
 
 #### Phase 2: 타입 시스템 강화 (최우선) 🔴
 1. **역할(Role) 타입 통일**
-   - [ ] UserRole enum 정의 (types/auth.ts)
-   - [ ] 'admin' | 'ADMIN' | 'customer' | 'CUSTOMER' 통일
-   - [ ] isAdmin, isCustomer 유틸리티 함수 구현
-   - [ ] 모든 역할 체크 로직 수정
+   - [x] UserRole enum 정의 (types/auth.ts) - 이미 완료
+   - [x] 'admin' | 'ADMIN' | 'customer' | 'CUSTOMER' 통일
+   - [x] isAdmin, isCustomer 유틸리티 함수 구현 - 이미 완료
+   - [x] 모든 역할 체크 로직 수정
 
 2. **공통 타입 정의**
    - [ ] types/menu.ts 생성 (Menu, ProductOption)
@@ -1905,7 +1905,7 @@ This project is proprietary and confidential.
 
 #### 리팩토링 진행 상황
 - **Phase 1**: 17/17 완료 (100%) ✅
-- **Phase 2**: 0/14 완료
+- **Phase 2**: 4/14 완료 (29%)
 - **Phase 3**: 0/10 완료
 - **Phase 4**: 0/27 완료
 - **Phase 5**: 0/19 완료
@@ -1915,7 +1915,7 @@ This project is proprietary and confidential.
 - **Phase 9**: 0/13 완료
 - **Phase 10**: 0/6 완료
 
-**총 진행률**: 17/144 (11.8%)
+**총 진행률**: 21/144 (14.6%)
 
 #### 예상 일정
 - **Phase 1-3 (최우선)**: 2주

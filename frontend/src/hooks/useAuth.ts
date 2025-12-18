@@ -4,7 +4,7 @@ import { authService } from '@/services/authService'
 import { tokenManager } from '@/utils/token'
 import { ROUTES } from '@/constants/routes'
 import type { User } from '@/types/auth'
-import { parseUserRole } from '@/types/auth'
+import { parseUserRole, UserRole, isAdmin as checkIsAdmin } from '@/types/auth'
 
 export const useAuth = () => {
   const { user, setUser, setToken, logout: storeLogout } = useAuthStore()
@@ -26,7 +26,7 @@ export const useAuth = () => {
       tokenManager.set(response.token)
       
       // 역할에 따라 리다이렉트
-      if (parsedUser.role === 'ADMIN') {
+      if (parsedUser.role === UserRole.ADMIN) {
         navigate(ROUTES.ADMIN.DASHBOARD)
       } else {
         navigate(ROUTES.HOME)
@@ -75,7 +75,7 @@ export const useAuth = () => {
 
   // 관리자 여부 확인
   const isAdmin = (): boolean => {
-    return user?.role === 'ADMIN'
+    return checkIsAdmin(user)
   }
 
   return {

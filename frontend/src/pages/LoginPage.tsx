@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/stores/authStore'
 import api from '@/lib/api'
 import { ROUTES } from '@/constants/routes'
-import { parseUserRole } from '@/types/auth'
+import { parseUserRole, UserRole } from '@/types/auth'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -22,17 +22,20 @@ export default function LoginPage() {
       const response = await api.post('/auth/login', { email, password })
       const { user, token } = response.data.data
 
-      setUser({
+      // 사용자 정보 설정 (역할 파싱)
+      const parsedUser = {
         id: user.id,
         email: user.email,
         name: user.name,
         role: parseUserRole(user.role)
-      })
+      }
+      
+      setUser(parsedUser)
       setToken(token)
       localStorage.setItem('token', token)
 
-      // Redirect based on role
-      if (user.role === 'ADMIN' || user.role === 'admin') {
+      // 역할에 따라 리다이렉트
+      if (parsedUser.role === UserRole.ADMIN) {
         navigate(ROUTES.ADMIN.DASHBOARD)
       } else {
         navigate(ROUTES.HOME)
